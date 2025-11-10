@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+@import "tailwindcss";
+
+#root {
+  margin: 0 auto;
+  font-family: "Roboto Mono", monospace;
+
+  color-scheme: light dark;
+  color: #fff;
+  background-color: #000;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
