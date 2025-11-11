@@ -1,13 +1,15 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-import { Dashboard } from "./pages/Dashboard";
+import LoginPage from "./pages/LoginPage";
+import Dashboard from "./pages/DashboardPage";
 
 export default function App() {
   return (
     <main>
-      <BrowserRouter basename="/donation-platform">
+      <BrowserRouter basename="/">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </main>

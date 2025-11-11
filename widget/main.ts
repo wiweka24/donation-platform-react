@@ -11,11 +11,8 @@ const messageEl = document.getElementById("donor-message")!;
 
 function connect() {
   // You'd pass this token to the creator in their dashboard
-  const SECRET_TOKEN = "temp_token_testcreator"; // Hard-coded for this test
-
-  const ws = new WebSocket(
-    `https://a56418e335cf.ngrok-free.app/ws/${SECRET_TOKEN}`
-  );
+  const SECRET_TOKEN = "temp_token_testcreator";
+  const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}${SECRET_TOKEN}`);
 
   ws.onopen = () => {
     console.log("Connected to donation server");

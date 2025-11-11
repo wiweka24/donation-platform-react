@@ -4,7 +4,7 @@ import {
   useGetDonationsQuery,
 } from "../services/apiService";
 
-export function Dashboard() {
+export default function Dashboard() {
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery();
   const { data: donations, isLoading: donationsLoading } =
     useGetDonationsQuery();
@@ -25,6 +25,11 @@ export function Dashboard() {
           {`http://localhost:5173/widget/${profile?.widget_secret_token}`}
         </Link>
       </p>
+
+      {/* <iframe
+        className="aspect-9/16 w-1/4"
+        src={"https://www.instagram.com/reel/DPtf9nSkzO1/embed/"}
+      /> */}
 
       <p>Your Live Donations</p>
       <div className="h-max">

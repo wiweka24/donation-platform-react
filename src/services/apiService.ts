@@ -48,7 +48,7 @@ interface DonationAlert {
 }
 
 const defaultBaseQuery = fetchBaseQuery({
-  baseUrl: "https://a56418e335cf.ngrok-free.app/api/",
+  baseUrl: import.meta.env.VITE_API_URL,
 
   // This is the key for auth!
   prepareHeaders: (headers, { getState }) => {
