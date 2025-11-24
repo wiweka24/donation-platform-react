@@ -8,6 +8,7 @@ export default function Dashboard() {
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery();
   const { data: donations, isLoading: donationsLoading } =
     useGetDonationsQuery();
+  console.log(profile);
 
   if (profileLoading || donationsLoading) {
     return <div>Loading your dashboard...</div>;
@@ -16,13 +17,13 @@ export default function Dashboard() {
   return (
     <div className="h-screen w-screen items-center flex flex-col justify-center">
       <h1>Welcome, {profile?.display_name}</h1>
-      <p>
+      <p className="text-center">
         Your OBS Widget URL:
         <Link
-          to={`http://localhost:5173/widget/${profile?.widget_secret_token}`}
+          to={`http://localhost:5173/widget/index.html?token=${profile?.widget_secret_token}`}
         >
           {" "}
-          {`http://localhost:5173/widget/${profile?.widget_secret_token}`}
+          {`http://localhost:5173/widget/index.html?=token${profile?.widget_secret_token}`}
         </Link>
       </p>
 

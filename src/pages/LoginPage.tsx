@@ -1,4 +1,4 @@
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useLoginMutation } from "../services/apiService";
 
 export default function LoginPage() {

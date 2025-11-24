@@ -66,7 +66,7 @@ export const apiService = createApi({
   tagTypes: ["Profile", "Donations"],
   endpoints: (builder) => ({
     // === AUTH ENDPOINTS ===
-    register: builder.mutation<AuthResponse, /* RegisterRequest type */ any>({
+    register: builder.mutation<AuthResponse, any>({
       query: (credentials) => ({
         url: "auth/register",
         method: "POST",
@@ -88,7 +88,6 @@ export const apiService = createApi({
 
       async onCacheEntryAdded(
         _arg,
-        // Notice: 'updateQueryData' is not here in the old version
         { cacheDataLoaded, cacheEntryRemoved, dispatch }
       ) {
         // 1. Wait for the profile data
