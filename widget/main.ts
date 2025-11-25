@@ -9,69 +9,64 @@ interface DonationAlert {
 }
 
 const alertBox = document.getElementById("alert-box")!;
-const donorNameEl = document.getElementById("donor-name")!;
-const amountEl = document.getElementById("donation-amount")!;
+const titleEl = document.getElementById("donate-title")!;
 const messageEl = document.getElementById("donor-message")!;
 const mediaContainerEl = document.getElementById("media-player-container")!;
 
 let ytPlayer: YT.Player | null = null;
 let mediaStopTimer: number | null = null;
 
-(window as any).onYouTubeIframeAPIReady = () => {
-  console.log("YouTube API Ready");
-  ytPlayer = new YT.Player("youtube-player", {
-    height: "100%",
-    width: "100%",
-    playerVars: {
-      autoplay: 0,
-      controls: 0,
-      modestbranding: 1,
-      playsinline: 1,
-    },
-    events: {
-      onReady: onPlayerReady,
-    },
-  });
-};
+function initYouTubePlayer() {
+  console.log("Checking if YouTube API is ready");
 
-function onPlayerReady(event: YT.PlayerEvent) {
-  console.log("YouTube Player Ready");
-  event.target.mute();
+  const checkInterval = setInterval(() => {
+    if ((window as any).YT && (window as any).YT.Player) {
+      console.log("YouTube API found! Initializing player");
+      clearInterval(checkInterval);
+
+      try {
+        ytPlayer = new YT.Player("youtube-player", {
+          height: "100%",
+          width: "100%",
+          playerVars: {
+            autoplay: 0,
+            controls: 0,
+            modestbranding: 1,
+            rel: 0,
+          },
+          events: {
+            onError: (e) => console.error("YouTube Player Error:", e.data),
+          },
+        });
+      } catch (err) {
+        console.error("Error creating YT Player:", err);
+      }
+    }
+  }, 100);
 }
 
 function getYouTubeVideoId(url: string): string | null {
   const regExp =
-    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+
   const match = url.match(regExp);
-  return match && match[7].length === 11 ? match[7] : null;
+  return match && match[2].length === 11 ? match[2] : null;
 }
 
 function connect() {
-  // You'd pass this token to the creator in their dashboard
   const urlParams = new URLSearchParams(window.location.search);
   const SECRET_TOKEN = urlParams.get("token");
-  console.log(SECRET_TOKEN);
 
   if (!SECRET_TOKEN) {
-    console.error("CRITICAL: No token found in URL.");
     document.body.innerHTML = "<h1>Error: Invalid Widget Token</h1>";
     return;
   }
 
   const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}${SECRET_TOKEN}`);
 
-  ws.onopen = () => {
-    console.log("Connected to donation server");
-  };
-
-  ws.onclose = () => {
-    setTimeout(connect, 5000);
-  };
-
-  ws.onerror = () => {
-    ws.close();
-  };
-
+  ws.onopen = () => console.log("Connected to donation server");
+  ws.onclose = () => setTimeout(connect, 5000);
+  ws.onerror = () => ws.close();
   ws.onmessage = (event) => {
     try {
       const alert: DonationAlert = JSON.parse(event.data);
@@ -84,8 +79,7 @@ function connect() {
 }
 
 function showAlert(alert: DonationAlert) {
-  donorNameEl.textContent = alert.donor_name;
-  amountEl.textContent = `donated ${alert.amount_cents}`; // Format this
+  titleEl.textContent = `${alert.donor_name} donated ${alert.amount_cents}`;
   messageEl.textContent = alert.donor_message;
   alertBox.classList.remove("hidden");
 
@@ -95,7 +89,6 @@ function showAlert(alert: DonationAlert) {
 
   if (alert.media_type === "youtube" && alert.media_url && ytPlayer) {
     const videoId = getYouTubeVideoId(alert.media_url);
-    console.log(videoId);
 
     if (videoId) {
       console.log(
@@ -109,7 +102,6 @@ function showAlert(alert: DonationAlert) {
         startSeconds: alert.media_start_seconds,
       });
       ytPlayer.playVideo();
-      ytPlayer.mute();
 
       const durationMs =
         (alert.media_end_seconds - alert.media_start_seconds) * 1000;
@@ -142,4 +134,5 @@ function stopAlert() {
   }
 }
 
+initYouTubePlayer();
 connect();

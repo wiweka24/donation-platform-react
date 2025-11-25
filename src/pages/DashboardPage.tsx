@@ -8,6 +8,7 @@ export default function Dashboard() {
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery();
   const { data: donations, isLoading: donationsLoading } =
     useGetDonationsQuery();
+  const widgetUrl = `http://localhost:5173/widget/index.html?token=${profile?.widget_secret_token}`;
   console.log(profile);
 
   if (profileLoading || donationsLoading) {
@@ -15,22 +16,10 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-screen w-screen items-center flex flex-col justify-center">
+    <div className="items-start flex flex-col justify-center">
       <h1>Welcome, {profile?.display_name}</h1>
-      <p className="text-center">
-        Your OBS Widget URL:
-        <Link
-          to={`http://localhost:5173/widget/index.html?token=${profile?.widget_secret_token}`}
-        >
-          {" "}
-          {`http://localhost:5173/widget/index.html?=token${profile?.widget_secret_token}`}
-        </Link>
-      </p>
-
-      {/* <iframe
-        className="aspect-9/16 w-1/4"
-        src={"https://www.instagram.com/reel/DPtf9nSkzO1/embed/"}
-      /> */}
+      <p>Your OBS Widget URL:</p>
+      <Link to={widgetUrl}> {widgetUrl}</Link>
 
       <p>Your Live Donations</p>
       <div className="h-max">

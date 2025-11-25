@@ -1,19 +1,33 @@
-/* Add this to your existing style.css */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 body {
-  /* Ensure no margins or scrollbars */
-  margin: 0;
+  margin: 16px;
   padding: 0;
   overflow: hidden;
+  width: max-content;
+
+  font-family: "Roboto Mono", monospace;
+
+  color-scheme: light dark;
+  color: white;
+  background-color: green;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  font-size: 1.75rem;
+  color: white;
 }
 
 #media-player-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 10;
+  height: 20vh;
+  aspect-ratio: 16/9;
 }
 
 #youtube-player {
@@ -22,8 +36,15 @@ body {
 }
 
 #alert-box {
-  z-index: 20;
-  position: relative;
+  background: black;
+  margin: 0;
+  padding: 1rem;
+  border: 0.5rem solid white;
+  border-radius: 0 0 1rem 1rem;
+}
+
+#donate-title {
+  display: flex;
 }
 
 .hidden {
