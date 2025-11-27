@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import {
   BookOpen,
-  GalleryVerticalEnd,
   SquareTerminal,
   ChevronsUpDown,
+  PiggyBank,
 } from "lucide-react";
 
 import {
@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useGetMyProfileQuery } from "@/services/apiService";
 
 const data = {
   user: {
@@ -35,7 +36,7 @@ const data = {
   },
   app: {
     name: "Donation Platform",
-    logo: GalleryVerticalEnd,
+    logo: PiggyBank,
     plan: "Prototype",
   },
   navMain: [
@@ -70,39 +71,30 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: profile } = useGetMyProfileQuery();
   const { isMobile } = useSidebar();
 
   return (
     <Sidebar collapsible="icon" {...props}>
       {/* HEADER: The Logo Section */}
-      <SidebarHeader>
+      <SidebarHeader className="border max-h-12">
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <SidebarMenuButton
-                size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              >
-                {/* This div holds the Icon/Logo. It stays visible when collapsed. */}
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <data.app.logo className="size-4" />
-                </div>
+            <SidebarMenuButton size="md">
+              <div className="flex aspect-square items-center justify-center rounded-lg text-sidebar-primary-foreground group-data-[state=collapsed]:size-8">
+                <data.app.logo className="size-4" />
+              </div>
 
-                {/* This div holds the Text. Shadcn automatically hides this div when collapsed because of the flex-1 class logic in the library. */}
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">
-                    {data.app.name}
-                  </span>
-                  <span className="truncate text-xs">{data.app.plan}</span>
-                </div>
-              </SidebarMenuButton>
-            </DropdownMenu>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{data.app.name}</span>
+              </div>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
       {/* CONTENT: The Menu Items */}
-      <SidebarContent>
+      <SidebarContent className="border">
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
@@ -137,24 +129,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       {/* FOOTER: The User Profile */}
-      <SidebarFooter>
+      <SidebarFooter className="border">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
+                <SidebarMenuButton size="lg">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={data.user.avatar} alt={data.user.name} />
+                    <AvatarImage
+                      src={data.user.avatar}
+                      alt={profile?.username}
+                    />
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      {data.user.name}
+                      {profile?.display_name}
                     </span>
-                    <span className="truncate text-xs">{data.user.email}</span>
+                    <span className="truncate text-xs">{profile?.email}</span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>

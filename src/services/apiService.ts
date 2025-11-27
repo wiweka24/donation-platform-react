@@ -14,10 +14,10 @@ interface AuthResponse {
 
 interface CreatorProfile {
   id: number;
-  user_id: number;
   username: string;
   display_name: string;
   widget_secret_token: string;
+  email: string;
 }
 
 interface CreateDonationRequest {

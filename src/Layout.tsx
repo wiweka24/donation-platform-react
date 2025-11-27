@@ -6,11 +6,12 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
-        <div className="border fixed bg-black w-full">
-          <SidebarTrigger className="h-12 w-12" />
+      <main className="w-full h-dvh flex flex-col overflow-hidden">
+        <div className="h-12 border-b bg-black flex items-center px-2 shrink-0 border">
+          <SidebarTrigger className="h-8 w-8 text-white" />
         </div>
-        <div className="p-4 mt-12">
+
+        <div className="flex-1 p-4 overflow-y-auto w-full border">
           <Outlet />
         </div>
       </main>
